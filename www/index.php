@@ -21,7 +21,9 @@ class JWT {
 
         $signature = $this->base64Url(hash_hmac('sha256',"$header.$payload",$this->secret_key,true));
 
-        return "$header.$payload.$signature";
+        return [
+            'token'         =>  "$header.$payload.$signature"
+        ];
     }
 
     private function base64Url($string)
@@ -66,11 +68,12 @@ class JWT {
 
 }
 
-$jwt = new JWT('teste');
-$token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjMsImV4cCI6MTYyNzM3NzYwMH0.3IrNeZ0JXInRQ7BZQM2TbVrvQeyYzQUe7ZfoOJEk8uA';
+$jwt = new JWT('secret_key');
 
-echo json_encode($jwt->generate([
-        'user_id' => 123,
-        'exp'     => strtotime('2021-07-27 06:20'),
-    ]));
+$token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMjMsImV4cCI6MTYyNzM3NzYwMH0.3IrNeZ0JXInRQ7BZQM2TbVrvQeyYzQUe7ZfoOJEk8uA';
 echo $jwt->decode($token);
+
+// echo json_encode($jwt->generate([
+//         'user_id' => 123,
+//         'exp'     => strtotime('2021-07-27 06:20'),
+//     ]));
